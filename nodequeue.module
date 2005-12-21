@@ -415,13 +415,19 @@ function nodequeue_queue_down($queue, $position) {
 function nodequeue_queue_front($queue, $position) {
   if ($position < 2 || $position > $queue->count)
     return;
-  nodequeue_queue_swap($queue, 1, $position);
+  $entry = db_fetch_object(db_query("SELECT * FROM {nodequeue_nodes} WHERE qid=$queue->qid AND position = $position"));
+  db_query("DELETE FROM {nodequeue_nodes} WHERE qid=$queue->qid AND position = $position");
+  db_query("UPDATE {nodequeue_nodes} SET position=position + 1 WHERE position < $position");
+  db_query("INSERT INTO {nodequeue_nodes} (qid, nid, position) VALUES ($queue->qid, $entry->nid, 1)");
 }
 
 function nodequeue_queue_back($queue, $position) {
   if ($position < 1 || $position >= $queue->count)
     return;
-  nodequeue_queue_swap($queue, $queue->count, $position);
+  $entry = db_fetch_object(db_query("SELECT * FROM {nodequeue_nodes} WHERE qid=$queue->qid AND position = $position"));
+  db_query("DELETE FROM {nodequeue_nodes} WHERE qid=$queue->qid AND position = $position");
+  db_query("UPDATE {nodequeue_nodes} SET position=position - 1 WHERE position > $position");
+  db_query("INSERT INTO {nodequeue_nodes} (qid, nid, position) VALUES ($queue->qid, $entry->nid, $queue->count)");
 }
 
 function _nodequeue_queue_remove(&$queue, $start, $end = 0) {
