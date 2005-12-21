@@ -159,7 +159,7 @@ function nodequeue_admin($arg = "", $arg2 = "", $arg3 = "", $arg4 = "") {
   }
 
   $output = theme('table', $header, $rows);
-//  print theme('page', $output, t('Node Queues'));
+  print theme('page', $output, t('Node Queues'));
 }
 
 //
