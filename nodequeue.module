@@ -287,10 +287,13 @@ function nodequeue_admin_view($qid, $op, $pos) {
 
   if (db_num_rows($result) > 0) {
     while ($node = db_fetch_object($result)) {
-      $buttons = l("up", "admin/nodequeue/view/$qid/up/$node->position") . " | "
-        . l("down", "admin/nodequeue/view/$qid/down/$node->position") . " | "
-        . l("top", "admin/nodequeue/view/$qid/front/$node->position") . " | "
-        . l("bottom", "admin/nodequeue/view/$qid/back/$node->position");
+      $buttons = theme('links', array(
+        l("up", "admin/nodequeue/view/$qid/up/$node->position"),
+        l("down", "admin/nodequeue/view/$qid/down/$node->position"),
+        l("top", "admin/nodequeue/view/$qid/front/$node->position"),
+        l("bottom", "admin/nodequeue/view/$qid/back/$node->position"),
+        l("remove", "admin/nodequeue/view/$qid/remove/$node->position"),
+      ));
       $list[] = array(l($node->title, "node/$node->nid"), format_name($node), format_date($node->created), $buttons);
     }
     $output .= theme('table', array("Node", "Author", "Date", "Operation"), $list, array('width' => '100%'));
