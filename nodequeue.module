@@ -2218,6 +2218,7 @@ function nodequeue_nodes($sqid, $backward = true, $teaser = true, $links = true,
     $result = db_query($sql, $sqid);
   }
 
+  $nodes = array();
   while ($nid = db_fetch_object($result)) {
     $node = node_load($nid->nid);
     $output .= node_view($node, $teaser, false, $links);
