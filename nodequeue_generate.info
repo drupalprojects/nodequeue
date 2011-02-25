@@ -1,4 +1,3 @@
-; $Id$
 name = Node Queue Generate
 description = Bulk assign nodes into queues for quickly populating a site.
 package = Development

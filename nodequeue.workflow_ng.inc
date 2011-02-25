@@ -1,5 +1,4 @@
 <?php
-// $Id$
 /**
  * @file nodequeue_workflow_ng.inc
  * 

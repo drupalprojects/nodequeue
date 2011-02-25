@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 function nodequeue_install() {
   drupal_set_message('Installing nodequeue');
