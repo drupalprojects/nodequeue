@@ -611,7 +611,7 @@ function nodequeue_load_queues($queue_names = array(), $bypass_cache = FALSE) {
   }
 
   if (!empty($to_load)) {
-    $result = db_query("SELECT q.*, COUNT(s.sqid) AS subqueues FROM {nodequeue_queue} q LEFT JOIN {nodequeue_subqueue} s ON q.name = s.name WHERE q.name IN (:to_load) GROUP BY q.name", array(':to_load' => $to_load));
+    $result = db_query("SELECT q.*, (SELECT COUNT(*) FROM {nodequeue_subqueue} s WHERE q.name = s.name) AS subqueues FROM {nodequeue_queue} q WHERE q.name IN (:to_load)", array(':to_load' => $to_load));
 
     foreach ($result as $queue) {
       $loaded[$queue->name] = $queue;
@@ -698,7 +698,7 @@ function nodequeue_load_subqueues($sqids, $bypass_cache = FALSE) {
   }
 
   if (!empty($to_load)) {
-    $result = db_query("SELECT s.*, COUNT(n.position) AS count FROM {nodequeue_subqueue} s LEFT JOIN {nodequeue_nodes} n ON n.sqid = s.sqid WHERE s.sqid IN (:to_load) GROUP BY s.sqid", array(':to_load' => $to_load));
+    $result = db_query("SELECT s.*, (SELECT COUNT(*) FROM {nodequeue_nodes} n WHERE n.sqid = s.sqid) AS count FROM {nodequeue_subqueue} s WHERE s.sqid IN (:to_load)", array(':to_load' => $to_load));
     foreach ($result as $obj) {
       // Sometimes we want to get to subqueues by reference, sometimes by sqid.
       // sqid is always unique, but reference is sometimes more readily available.
@@ -751,8 +751,7 @@ function nodequeue_load_subqueues_by_queue($queue_names, $page_size = 0) {
     return array();
   }
 
-  $query = "SELECT s.*, COUNT(n.position) AS count FROM {nodequeue_subqueue} s
-  LEFT JOIN {nodequeue_nodes} n ON n.sqid = s.sqid WHERE s.name IN (:names) GROUP BY s.sqid";
+  $query = "SELECT s.*, (SELECT COUNT(*) FROM {nodequeue_nodes} n WHERE n.sqid = s.sqid) AS count FROM {nodequeue_subqueue} s WHERE s.name IN (:names)";
   $result = db_query($query, array(':names' => $queue_names));
 
   $subqueues = array();
