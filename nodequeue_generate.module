@@ -97,11 +97,9 @@ function nodequeue_generate_repopulate_queues($queues, $nodes_limit = 10) {
 
   // Load all queues and their subqueues.
   $queues = nodequeue_load_queues($queues);
-  $subqueues = nodequeue_load_subqueues_by_queue($queues);
 
   // Re-populate subqueues
-  foreach ($queues as $name) {
-    $queue = nodequeue_load($name);
+  foreach ($queues as $queue) {
 
     // Skip nodequeues that do not belong to any node types.
     if (!empty($queue->types)) {
