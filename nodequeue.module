@@ -615,6 +615,7 @@ function nodequeue_load_queues($queue_names = array(), $bypass_cache = FALSE) {
 
     foreach ($result as $queue) {
       $loaded[$queue->name] = $queue;
+      $loaded[$queue->name]->new = FALSE;
       // ensure valid defaults:
       $loaded[$queue->name]->types = array();
       $loaded[$queue->name]->roles = array();
