@@ -1805,7 +1805,7 @@ function nodequeue_view_nodes($sqid, $backward = TRUE, $view_mode = 'teaser', $l
  *   If TRUE (default), only load published nodes.
  *
  * @return array
- *   An array of node objects (indexed sequentially, not by nid).
+ *   An array of node objects indexed by nid.
  */
 function nodequeue_load_nodes($sqid, $backward = FALSE, $from = 0, $count = 5, $published_only = TRUE) {
   $orderby = ($backward ? "DESC" : "ASC");
