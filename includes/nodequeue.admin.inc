@@ -1007,7 +1007,7 @@ function nodequeue_save_subqueue_order($nodes, $qid, $sqid) {
   }
   $nodes = $clean;
 
-  array_walk($clean, create_function('&$node', '$node = serialize($node);'));
+  array_walk($clean, '_nodequeue_serialize');
 
   if (count(array_unique($clean)) < count($nodes)) {
     return array(NODEQUEUE_DUPLICATE_POSITION, 'Duplicate position values are not allowed. New subqueue order not saved.');
@@ -1052,6 +1052,10 @@ function nodequeue_save_subqueue_order($nodes, $qid, $sqid) {
   }
 
   return array(NODEQUEUE_OK, 'The queue has been updated.');
+}
+
+function _nodequeue_serialize(&$node) {
+  $node = serialize($node);
 }
 
 function nodequeue_arrange_subqueue_form_clear_submit($form, &$form_state) {
