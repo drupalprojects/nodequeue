@@ -588,7 +588,7 @@ class nodequeue_queue {
 
   public $current = NULL;
 
-  function __construct($type) {
+  public function __construct($type) {
     $this->owner = $type;
   }
 }
